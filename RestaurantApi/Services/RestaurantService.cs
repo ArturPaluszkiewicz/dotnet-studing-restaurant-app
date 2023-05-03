@@ -22,6 +22,19 @@ namespace RestaurantApi.Services
             return restaurant.Id;
         }
 
+        public bool DeleteRestaurant(int id)
+        {
+            var restaurant = _dbContext
+                .Restaurants
+                .FirstOrDefault(r => r.Id == id);
+
+            if (restaurant is null) return false;
+
+            _dbContext.Remove(restaurant);
+            _dbContext.SaveChanges();
+            return true;
+        }
+
         public IEnumerable<RestaurantDto> GetAllRestaurants()
         {
             var restaurants = _dbContext
@@ -30,9 +43,8 @@ namespace RestaurantApi.Services
                 .Include(r => r.Dishes)
                 .ToList();
 
-            if (restaurants is null){
-                return null;
-            }
+            if (restaurants is null) return null;
+
             return _mapper.Map<List<RestaurantDto>>(restaurants);
         }
 
@@ -43,9 +55,9 @@ namespace RestaurantApi.Services
                 .Include(r => r.Address)
                 .Include(r => r.Dishes)
                 .FirstOrDefault(r => r.Id == id);
-            if (restaurant is null){
-                return null;
-            }
+                
+            if (restaurant is null) return null;
+
             return _mapper.Map<RestaurantDto>(restaurant);
         }
     }
