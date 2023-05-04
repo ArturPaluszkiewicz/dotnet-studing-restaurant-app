@@ -1,4 +1,5 @@
 using System.Reflection;
+using NLog.Web;
 using RestaurantApi;
 using RestaurantApi.Entities;
 using RestaurantApi.Services;
@@ -6,6 +7,11 @@ using RestaurantApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// NLog: Setup NLog for Dependency injection
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<RestaurantDbContext>();
@@ -17,7 +23,6 @@ var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<RestaurantSeeder>();
-
 seeder.Seed();
 
 // Configure the HTTP request pipeline.
