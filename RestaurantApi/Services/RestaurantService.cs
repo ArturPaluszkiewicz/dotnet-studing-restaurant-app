@@ -35,6 +35,23 @@ namespace RestaurantApi.Services
             return true;
         }
 
+        public bool ChangeRestaurant(int id, PutRestaurantDto dto)
+        {
+            var restaurant = _dbContext
+                .Restaurants
+                .FirstOrDefault(r => r.Id == id);
+            
+            if (restaurant is null) return false;
+
+            restaurant.Name = dto.Name;
+            restaurant.Description = dto.Description;
+            restaurant.HasDelivery = dto.HasDelivery;
+
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
         public IEnumerable<RestaurantDto> GetAllRestaurants()
         {
             var restaurants = _dbContext
@@ -55,7 +72,7 @@ namespace RestaurantApi.Services
                 .Include(r => r.Address)
                 .Include(r => r.Dishes)
                 .FirstOrDefault(r => r.Id == id);
-                
+
             if (restaurant is null) return null;
 
             return _mapper.Map<RestaurantDto>(restaurant);
