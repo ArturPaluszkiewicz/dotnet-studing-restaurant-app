@@ -26,8 +26,6 @@ namespace RestaurantApi.Services
 
         public bool DeleteRestaurant(int id)
         {
-            _logger.LogError($"Restaurant with id: {id} DELETE action invoke");
-
             var restaurant = _dbContext
                 .Restaurants
                 .FirstOrDefault(r => r.Id == id);
