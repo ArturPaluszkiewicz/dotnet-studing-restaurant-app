@@ -48,11 +48,8 @@ namespace RestaurantApi.Controller
         [HttpDelete("{id}")]
         public ActionResult DeleteRestaurant([FromRoute] int id)
         {
-            var isDeleted = _service.DeleteRestaurant(id);
-
-            if (isDeleted) return NoContent();
-
-            return NotFound();
+            _service.DeleteRestaurant(id);
+            return NoContent();
         }
 
         [HttpPut("{id}")]
@@ -60,10 +57,7 @@ namespace RestaurantApi.Controller
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
 
-            var isUpdated = _service.ChangeRestaurant(id,dto);
-
-            if (!isUpdated) return NotFound();
-
+            _service.ChangeRestaurant(id,dto);
             return Ok();
         } 
     }

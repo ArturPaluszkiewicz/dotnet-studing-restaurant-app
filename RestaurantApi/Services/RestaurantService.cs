@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RestaurantApi.Entities;
 using RestaurantApi.Models;
+using RestaurantApi.Exceptions;
 
 namespace RestaurantApi.Services
 {
@@ -24,34 +25,31 @@ namespace RestaurantApi.Services
             return restaurant.Id;
         }
 
-        public bool DeleteRestaurant(int id)
+        public void DeleteRestaurant(int id)
         {
             var restaurant = _dbContext
                 .Restaurants
                 .FirstOrDefault(r => r.Id == id);
 
-            if (restaurant is null) return false;
+            if (restaurant is null) throw new NotFoundException("Restaurant Not Found");
 
             _dbContext.Remove(restaurant);
             _dbContext.SaveChanges();
-            return true;
         }
 
-        public bool ChangeRestaurant(int id, PutRestaurantDto dto)
+        public void ChangeRestaurant(int id, PutRestaurantDto dto)
         {
             var restaurant = _dbContext
                 .Restaurants
                 .FirstOrDefault(r => r.Id == id);
             
-            if (restaurant is null) return false;
+            if (restaurant is null) throw new NotFoundException("Restaurant Not Found");
 
             restaurant.Name = dto.Name;
             restaurant.Description = dto.Description;
             restaurant.HasDelivery = dto.HasDelivery;
 
             _dbContext.SaveChanges();
-
-            return true;
         }
 
         public IEnumerable<RestaurantDto> GetAllRestaurants()
@@ -75,7 +73,7 @@ namespace RestaurantApi.Services
                 .Include(r => r.Dishes)
                 .FirstOrDefault(r => r.Id == id);
 
-            if (restaurant is null) return null;
+            if (restaurant is null) throw new NotFoundException("Restaurant Not Found");
 
             return _mapper.Map<RestaurantDto>(restaurant);
         }
