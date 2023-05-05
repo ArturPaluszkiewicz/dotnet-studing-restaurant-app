@@ -8,8 +8,9 @@ namespace RestaurantApi.Services
 
         public IEnumerable<DishDto> GetAllDishes(int resId);
 
-        public DishDto GetDish(int resId, int dishId);
+        public DishDto GetDishById(int resId, int dishId);
 
-        public void DeleteDish(int resId, int dishId);
+        public void DeleteDishById(int resId, int dishId);
+        public void DeleteAllDishes(int resId);
     }
 }

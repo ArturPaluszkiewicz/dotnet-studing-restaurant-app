@@ -33,9 +33,25 @@ namespace RestaurantApi.Controller
         [HttpGet("{dishId}")]
         public ActionResult<DishDto> GetById([FromRoute]int restaurantId, [FromRoute]int dishId)
         {
-            var dishDto = _service.GetDish(restaurantId,dishId);
+            var dishDto = _service.GetDishById(restaurantId,dishId);
 
             return Ok(dishDto);
+        }
+
+        [HttpDelete]
+        public ActionResult DeleteAll([FromRoute]int restaurantId)
+        {
+            _service.DeleteAllDishes(restaurantId);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{dishId}")]
+        public ActionResult DeleteById([FromRoute]int restaurantId,[FromRoute]int dishId)
+        {
+            _service.DeleteDishById(restaurantId,dishId);
+
+            return NoContent();
         }
     }
 }
