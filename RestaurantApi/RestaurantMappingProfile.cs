@@ -18,6 +18,8 @@ namespace RestaurantApi
             CreateMap<CreateRestaurantDto, Restaurant>()
                 .ForMember(m => m.Address, c => c.MapFrom(dto => new Address()
                 {City = dto.City, Street = dto.Street, PostalCode = dto.PostalCode}));
+
+            CreateMap<CreateDishDto, Dish>();
         }   
     }
 }

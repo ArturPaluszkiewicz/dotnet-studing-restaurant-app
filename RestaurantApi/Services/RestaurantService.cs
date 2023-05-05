@@ -10,12 +10,10 @@ namespace RestaurantApi.Services
     {
         private readonly RestaurantDbContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly ILogger<RestaurantService> _logger;
-        public RestaurantService(RestaurantDbContext dbContext, IMapper mapper, ILogger<RestaurantService> logger)
+        public RestaurantService(RestaurantDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
-            _logger = logger;
         }
         public int AddRestuarant(CreateRestaurantDto dto)
         {
