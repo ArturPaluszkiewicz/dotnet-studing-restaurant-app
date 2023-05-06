@@ -1,7 +1,9 @@
 using System.Reflection;
+using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using RestaurantApi;
 using RestaurantApi.Entities;
@@ -13,6 +15,22 @@ using RestaurantApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var authenticationSettings = new AuthenticationSettings();
+builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = "Bearer";
+    options.DefaultScheme = "Bearer";
+    options.DefaultChallengeScheme = "Bearer";
+}).AddJwtBearer(cfg => {
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new TokenValidationParameters{
+        ValidIssuer = authenticationSettings.JwtIssuer,
+        ValidAudience = authenticationSettings.JwtIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+    };
+});
 
 // NLog: Setup NLog for Dependency injection
 builder.Logging.ClearProviders();
@@ -42,6 +60,7 @@ seeder.Seed();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<RequestTimeMiddleware>();
 
+app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseSwagger();
