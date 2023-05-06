@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 using NLog.Web;
 using RestaurantApi;
 using RestaurantApi.Entities;
@@ -21,6 +22,7 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<RequestTimeMiddleware>();
 builder.Services.AddSwaggerGen();

@@ -17,9 +17,8 @@ namespace RestaurantApi.Controller
         [HttpPost("register")]
         public ActionResult Post([FromBody]CreateUserDto dto)
         {
-            var userId = _service.CreateUser(dto);
-
-            return Created($"api/account/{userId}",null);
+            _service.CreateUser(dto);
+            return Ok();
         }
     }
 }

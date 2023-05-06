@@ -4,6 +4,6 @@ namespace RestaurantApi.Services
 {
     public interface IAccountService
     {
-        public int CreateUser(CreateUserDto dto);
+        public void CreateUser(CreateUserDto dto);
     }
 }
